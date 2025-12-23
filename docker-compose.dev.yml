@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    volumes:
+      - ./test/uploads:/app/uploads
+    ports:
+      - "3000:3000"
+    env_file: .env
+    network_mode: host

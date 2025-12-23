@@ -1,0 +1,9 @@
+services:
+  app:
+    image: subratade9ok/file-transfer-local:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./uploads:/uploads
+    env_file: .env
+    network_mode: host
