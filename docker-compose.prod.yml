@@ -3,6 +3,8 @@ services:
     image: subratade9ok/file-transfer-local:latest
     ports:
       - "7827:7827"
+    volumes:
+      - ./test/uploads:/app/uploads
     # env_file: .env
     environment:
       - PORT=7827
