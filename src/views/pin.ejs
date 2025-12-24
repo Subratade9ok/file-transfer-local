@@ -1,22 +1,21 @@
 <%- include('partials/header') %>
 
-<h2 class="font-bold mb-3">Enter PIN</h2>
+  <h2 class="font-bold text-lg mb-2 bg-linear-to-r from-indigo-500 to-cyan-500 text-transparent bg-clip-text">Enter PIN
+  </h2>
 
-<form method="post" class="bg-white p-4 rounded shadow w-64">
-  <input
-    type="password"
-    name="pin"
-    placeholder="PIN"
-    class="border p-2 w-full mb-2"
-    autofocus
-  >
-  <button class="bg-black text-white w-full py-1 rounded">
-    Unlock
-  </button>
-</form>
+  <form method="post" class="bg-white p-4 rounded shadow w-64">
+    <div class="relative p-0.5 mb-2 bg-linear-to-r from-indigo-500 to-cyan-500 rounded">
+      <input type="password" name="pin" placeholder="PIN" class="w-full p-2 border-0 outline-0  bg-white" autofocus>
+    </div>
+    <button class="bg-linear-to-r from-indigo-500 to-cyan-500 text-white w-full py-1 rounded cursor-pointer">
+      🔓 Unlock
+    </button>
+  </form>
 
-<% if (typeof error !== "undefined" && error) { %>
-  <p class="text-red-600 mt-2"><%= error %></p>
-<% } %>
+  <% if (typeof error !=="undefined" && error) { %>
+    <p class="text-red-600 mt-2">
+      <%= error %>
+    </p>
+    <% } %>
 
-<%- include('partials/footer') %>
+      <%- include('partials/footer') %>

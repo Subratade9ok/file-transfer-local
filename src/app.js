@@ -6,9 +6,8 @@ import { fileURLToPath } from "url";
 import uploadRoutes from "./routes/upload.routes.js";
 import browseRoutes from "./routes/browse.routes.js";
 import authRoutes from "./routes/auth.routes.js";
-
-import {config} from "dotenv";
-config();
+import { loadEnvAndValidate } from "./utils/env.util.js";
+loadEnvAndValidate();
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();

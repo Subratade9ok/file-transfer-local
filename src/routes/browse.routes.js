@@ -12,6 +12,10 @@ router.get("/", requirePin, (req, res) => {
   const dir = path.resolve(ROOT, req.query.path || "");
   if (!dir.startsWith(ROOT)) return res.sendStatus(403);
 
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
   const items = fs.readdirSync(dir).map(name => {
     const full = path.join(dir, name);
     const stat = fs.statSync(full);
