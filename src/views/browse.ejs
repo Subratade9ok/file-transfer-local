@@ -1,36 +1,48 @@
 <%- include('partials/header') %>
 
-<h1 class="font-bold text-lg mb-3 bg-gradient-to-r from-indigo-500 to-cyan-500 text-transparent bg-clip-text">
-  Browsing: /<%= current || '' %>
-</h1>
+  <h1 class="font-bold text-lg mb-3 bg-linear-to-r from-indigo-500 to-cyan-500 text-transparent bg-clip-text">
+    Browsing: /<%= current || '' %>
+  </h1>
 
-<p class="mt-4 py-3 text-xs flex justify-between">
-  <a href="/" class="underline text-indigo-600">&lt; Upload</a>
-  <a href="/logout" class="text-xs underline text-red-600">Logout</a>
-</p>
+  <div class="mt-4 py-3 text-xs flex justify-between">
+    <div class="flex gap-x-2">
+      <% if (current!=='' ) { %>
+        <% const currentArr=current.split('/'); %>
+          <% const parent=currentArr.slice(0, -1).join('/'); %>
+            <a href="/browse?path=<%= parent %>" class="text-indigo-600">&lt; <span class="underline">
+                <%= currentArr[currentArr.length -1] || 'Home' %>
+              </span>
+            </a>
+            <% } else { %>
+              <a href="/" class="underline text-indigo-600">&lt; Upload</a>
+              <% } %>
 
-<ul class="bg-white rounded shadow p-3">
-  <% items.forEach(item => { %>
-    <li class="mb-1 flex items-center gap-2">
-      <% if (item.isDir) { %>
-        📁
-        <a
-          href="/browse?path=<%= item.path %>"
-          class="text-blue-600 underline"
-        >
-          <%= item.name %>
-        </a>
-      <% } else { %>
-        📄
-        <a
-          href="/browse/download?file=<%= item.path %>"
-          class="underline"
-        >
-          <%= item.name %>
-        </a>
+                <a class="underline text-indigo-600" href="#">+ New Folder</a>
+                <a class="underline text-indigo-600" href="#">+ New File</a>
+
+    </div>
+    <a href="/logout" class="text-xs underline text-red-600">Logout</a>
+  </div>
+
+  <ul class="bg-white rounded shadow p-3">
+    <% if (items.length===0) { %>
+      <li class="text-gray-500 italic">This folder is empty.</li>
       <% } %>
-    </li>
-  <% }) %>
-</ul>
+        <% items.forEach(item=> { %>
+          <li class="mb-1 flex items-center gap-2">
+            <% if (item.isDir) { %>
+              📁
+              <a href="/browse?path=<%= item.path %>" class="text-blue-600 underline">
+                <%= item.name %>
+              </a>
+              <% } else { %>
+                📄
+                <a href="/browse/download?file=<%= item.path %>" class="underline">
+                  <%= item.name %>
+                </a>
+                <% } %>
+          </li>
+          <% }) %>
+  </ul>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>

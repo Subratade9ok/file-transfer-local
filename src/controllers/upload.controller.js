@@ -2,8 +2,10 @@ import multer from "multer";
 import fs from "fs";
 import path from "path";
 import { resolveFileName } from "../utils/fileName.util.js";
+import { loadEnvAndValidate } from "../utils/env.util.js";
+loadEnvAndValidate();
 
-const uploadRoot = path.resolve(process.env.UPLOAD_DIR || "./uploads");
+const uploadRoot = path.resolve(process.env.UPLOAD_DIR);
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {

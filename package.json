@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "build:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --minify"
+    "build:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --minify",
+    "dev:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --watch"
   },
   "dependencies": {
     "archiver": "^7.0.1",
