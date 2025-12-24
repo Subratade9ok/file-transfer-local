@@ -4,6 +4,12 @@ services:
     volumes:
       - ./test/uploads:/app/uploads
     ports:
-      - "3000:3000"
-    env_file: .env
+      - "7827:7827"
+    # env_file: .env
+    environment:
+      - PORT=7827
+      - UPLOAD_DIR=./uploads/ddd
+      - BROWSE_PIN=1234
+      - SESSION_SECRET=supersecret
+
     network_mode: host

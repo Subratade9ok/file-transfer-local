@@ -44,4 +44,28 @@ router.post("/zip", requirePin, (req, res) => {
   archive.finalize();
 });
 
+
+
+router.post("/mkdir", requirePin, (req, res) => {
+  const { basePath, name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: "Folder name required" });
+  }
+
+  const target = path.resolve(ROOT, basePath || "", name);
+
+  // Security: prevent ../ escape
+  if (!target.startsWith(ROOT)) {
+    return res.sendStatus(403);
+  }
+
+  if (!fs.existsSync(target)) {
+    fs.mkdirSync(target, { recursive: true });
+  }
+
+  res.json({ success: true });
+});
+
+
 export default router;

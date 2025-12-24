@@ -4,5 +4,5 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build:css
-EXPOSE 3000
+EXPOSE 7827
 CMD ["node", "src/server.js"]

@@ -2,8 +2,11 @@ services:
   app:
     image: subratade9ok/file-transfer-local:latest
     ports:
-      - "3000:3000"
-    volumes:
-      - ./uploads:/uploads
-    env_file: .env
+      - "7827:7827"
+    # env_file: .env
+    environment:
+      - PORT=7827
+      - UPLOAD_DIR=./uploads
+      - BROWSE_PIN=1234
+      - SESSION_SECRET=supersecret
     network_mode: host

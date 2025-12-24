@@ -2,6 +2,7 @@ import express from "express";
 import QRCode from "qrcode";
 import { upload } from "../controllers/upload.controller.js";
 import { getLanIp } from "../utils/network.util.js";
+import { requirePin } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -24,6 +25,11 @@ router.post("/upload", upload.array("files"), (req, res) => {
   res.redirect("/");
 });
 
+
+router.post("/upload/explorer", requirePin, upload.array("files"),(req, res) => {
+    res.json({ success: true });
+  }
+);
 
 
 

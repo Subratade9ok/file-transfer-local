@@ -11,12 +11,25 @@ const storage = multer.diskStorage({
   destination(req, file, cb) {
     const date = new Date().toISOString().slice(0, 10);
 
-    // Store on request object so filename() can access it
-    req.uploadDateDir = path.join(uploadRoot, date);
+    const targetPath = req.query.targetPath;
+    let dest;
 
-    fs.mkdirSync(req.uploadDateDir, { recursive: true });
-    cb(null, req.uploadDateDir);
+    if (targetPath !== undefined) {
+      dest = path.resolve(uploadRoot, targetPath ?? "/");
+    } else {
+      const clientIp = req.headers["x-forwarded-for"] || req.socket.remoteAddress?.split(":").pop();
+      dest = path.join(uploadRoot, date, clientIp);
+    }
+
+    if (!dest.startsWith(uploadRoot)) {
+      return cb(new Error("Invalid path"));
+    }
+
+    req.uploadDateDir = dest;
+    fs.mkdirSync(dest, { recursive: true });
+    cb(null, dest);
   },
+
 
   filename(req, file, cb) {
     try {

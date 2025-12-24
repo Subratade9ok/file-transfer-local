@@ -1,43 +1,133 @@
 <%- include('partials/header') %>
 
-  <h1 class="font-bold text-lg mb-3 bg-linear-to-r from-indigo-500 to-cyan-500 text-transparent bg-clip-text">
-    Browsing: /<%= current || '' %>
+  <h1 class="font-bold text-xl mb-2 bg-linear-to-r from-indigo-600 to-cyan-600 text-transparent bg-clip-text">
+    Browsing Files
   </h1>
 
-  <div class="mt-4 py-3 text-xs flex justify-between">
+  
     <div class="flex gap-x-2">
-      <% if (current!=='' ) { %>
-        <% const currentArr=current.split('/'); %>
-          <% const parent=currentArr.slice(0, -1).join('/'); %>
-            <a href="/browse?path=<%= parent %>" class="text-indigo-600">&lt; <span class="underline">
-                <%= currentArr[currentArr.length -1] || 'Home' %>
-              </span>
-            </a>
+      <a href="/" class="text-indigo-600 underline">Back to Uploads</a>
+      <a class="underline text-indigo-600" onclick="createFolder()" href="#">New Folder</a>
+        <label
+          class="underline text-indigo-600 cursor-pointer"
+        >
+          New File
+          <input
+            type="file"
+            id="explorerUpload"
+            multiple
+            class="hidden opacity-0 absolute"
+          >
+        </label>
+
+      </div>
+      
+      <nav class="text-sm my-3 flex flex-wrap items-center gap-1">
+      <!-- Root -->
+        <a href="/browse" class="text-indigo-600 ">🏡</a>
+
+        <% if (current) { %>
+          <% 
+            const parts = current.split('/').filter(Boolean);
+            let acc = '';
+          %>
+
+          <% parts.forEach((part, index) => { %>
+            <span class="text-gray-400">›</span>
+            <% acc += (acc ? '/' : '') + part; %>
+
+            <% if (index === parts.length - 1) { %>
+              <!-- Current folder (not a link) -->
+              <span class="text-gray-400"><%= part %></span>
             <% } else { %>
-              <a href="/" class="underline text-indigo-600">&lt; Upload</a>
-              <% } %>
+              <!-- Parent folders -->
+              <a
+                href="/browse?path=<%= acc %>"
+                class="text-indigo-700 hover:underline"
+              >
+                <%= part %>
+              </a>
+            <% } %>
+          <% }) %>
+        <% } %>
 
-                <a class="underline text-indigo-600" href="#">+ New Folder</a>
-                <a class="underline text-indigo-600" href="#">+ New File</a>
 
-    </div>
-    <a href="/logout" class="text-xs underline text-red-600">Logout</a>
-  </div>
+        <a href="/logout" class="text-xs underline text-red-600 ms-auto">Logout</a>
+    </nav>
 
-  <ul class="bg-white rounded shadow p-3">
+
+    <ul class="bg-white rounded shadow p-4">
+      <% if (current && current !== '/') { %>
+        <a href="/browse?path=<%= current.split('/').slice(0, -1).join('/') %>" class="text-blue-600">
+        ↩ Back
+      </a>
+      <div>&nbsp;</div>
+      <% } %>
     <% if (items.length===0) { %>
-      <li class="text-gray-500 italic">This folder is empty.</li>
+      <div class="text-gray-400 h-30 flex flex-col items-center justify-center gap-y-6">
+        <p class="scale-300">📂</p>
+        <p>This folder is empty.</p>
+      </div>
       <% } %>
         <% items.forEach(item=> { %>
-          <li class="mb-1 flex items-center gap-2">
+          <li class="mb-1 flex items-center gap-x-1">
             <% if (item.isDir) { %>
               📁
-              <a href="/browse?path=<%= item.path %>" class="text-blue-600 underline">
+              <a href="/browse?path=<%= item.path %>" class="text-blue-600 hover:underline">
                 <%= item.name %>
               </a>
               <% } else { %>
-                📄
-                <a href="/browse/download?file=<%= item.path %>" class="underline">
+                <% const ext = item.name.split('.').pop().toLowerCase(); %>
+                <% const emojis = {
+                  'png': '📷',
+                  'jpg': '📷',
+                  'jpeg': '📷',
+                  'bmp': '📷',
+                  'gif': '📸',
+                  'tiff': '📷',
+                  'svg': '🖼️',
+                  'mp4': '🎥',
+                  'mkv': '🎥',
+                  'avi': '🎥',
+                  'mov': '🎥',
+                  'wmv': '🎥',
+                  'flv': '🎥',
+                  'mp3': '🎵',
+                  'wav': '🎵',
+                  'flac': '🎵',
+                  'aac': '🎵',
+                  'ogg': '🎵',
+                  'm4a': '🎵',
+                  'pdf': '📄',
+                  'doc': '📄',
+                  'docx': '📄',
+                  'txt': '📄',
+                  'rtf': '📄',
+                  'odt': '📄',
+                  'xls': '📊',
+                  'xlsx': '📊',
+                  'ppt': '📊',
+                  'pptx': '📊',
+                  'zip': '📦',
+                  'rar': '📦',
+                  'tar': '📦',
+                  'gz': '📦',
+                  'bz2': '📦',
+                  '7z': '📦',
+                  'exe': '⚙️',
+                  'dmg': '⚙️',  
+                  'bat': '⚙️',  
+                  'sh': '⚙️',   
+                  'html': '🌐', 
+                  'css': '🎨',  
+                  'js': '💻',   
+                  'json': '💻', 
+                  'xml': '💻',  
+                  'other': '📝'
+                } %>
+                <% const emoji = emojis[ext] || emojis.other; %>
+                <span class="text-gray-300"><%= emoji %></span>
+                <a href="/browse/download?file=<%= item.path %>" class="hover:underline hover:text-gray-800">
                   <%= item.name %>
                 </a>
                 <% } %>
@@ -45,4 +135,52 @@
           <% }) %>
   </ul>
 
+
+
   <%- include('partials/footer') %>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const explorerInput = document.getElementById("explorerUpload");
+
+      // Guard: only attach if element exists
+      if (!explorerInput) return;
+
+      explorerInput.addEventListener("change", () => {
+        if (!explorerInput.files.length) return;
+
+        const fd = new FormData();
+        [...explorerInput.files].forEach(f => fd.append("files", f));
+
+        // 🔑 current folder = upload destination
+        fd.append("targetPath", "<%= current || '' %>");
+        fetch(`/upload/explorer?targetPath=${encodeURIComponent("<%= current || '' %>")}`, {
+          method: "POST",
+          body: fd
+        })
+        .then(() => location.reload())
+        .catch(() => alert("Upload failed"));
+      });
+    });
+
+
+
+// create folder
+function createFolder() {
+  const name = prompt("Folder name");
+  if (!name) return;
+
+  fetch("/browse/mkdir", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      basePath: "<%= current || '' %>",
+      name
+    })
+  })
+  .then(() => location.reload())
+  .catch(() => alert("Failed to create folder"));
+}
+</script>

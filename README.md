@@ -41,15 +41,18 @@ cd file-transfer-local
 
 ```bash
 npm install
+npm run build:css
 ```
 
 ### 3. Configure environment variables
 
 Create a `.env` file in the root directory and add the following:
 ```bash
-PORT=3000
+PORT=7827
 UPLOAD_DIR=./uploads  # Specify the default upload directory
 BROWSE_PIN=your_secure_pin  # Set a PIN for browsing
+SESSION_SECRET=supersecret  # Set a secret for session
+
 ```
 
 ### 4. Run the application
@@ -62,12 +65,12 @@ npm start
 You can now open the app on your system by visiting: 
 
 ```bash
-http://localhost:3000
+http://localhost:7827
 ```
 
 Scan the QR Code displayed on the upload page to access it from other devices on the same network.
 
-### 5. Docker Setup (Optional)
+### 5. Docker Setup
 If you prefer to run the application in Docker, follow these steps.
 
 #### 1. Build Docker image
@@ -77,7 +80,7 @@ docker build -t subratade9ok/file-transfer-local .
 
 #### 2. Run Docker container
 ```bash
-docker run -p 3000:3000 -v $(pwd)/uploads:/app/uploads subratade9ok/file-transfer-local
+docker run -e PORT=7827 -e UPLOAD_DIR=./uploads/ddd -e BROWSE_PIN=1234 -e SESSION_SECRET=supersecret -p 7827:7827 --network host -v $(pwd)/uploads:/app/uploads subratade9ok/file-transfer-local
 ```
 
 #### 6. GitHub Actions (CI/CD)

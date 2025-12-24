@@ -1,13 +1,13 @@
 {
   "name": "file-transfer-local",
-  "version": "1.0.0",
-  "description": "LAN based file transfer with QR, resumable uploads and desktop-like browsing",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "LAN based file transfer with QR, file uploads and desktop-like browsing",
+  "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
+    "dev:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --watch",
     "start": "node src/server.js",
-    "build:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --minify",
-    "dev:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --watch"
+    "build:css": "tailwindcss -i ./src/public/tailwind.css -o ./src/public/style.css --minify"
   },
   "dependencies": {
     "archiver": "^7.0.1",
